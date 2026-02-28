@@ -302,6 +302,40 @@ const openApiSpec = {
       },
     },
     '/api/applications': {
+      get: {
+        tags: ['Applications'],
+        summary: 'List applications (admin)',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'query',
+            name: 'jobId',
+            schema: { type: 'string' },
+          },
+          {
+            in: 'query',
+            name: 'email',
+            schema: { type: 'string', format: 'email' },
+          },
+          {
+            in: 'query',
+            name: 'page',
+            schema: { type: 'integer', minimum: 1 },
+          },
+          {
+            in: 'query',
+            name: 'limit',
+            schema: { type: 'integer', minimum: 1 },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Applications fetched successfully',
+          },
+          401: { description: 'Unauthenticated' },
+          403: { description: 'Forbidden' },
+        },
+      },
       post: {
         tags: ['Applications'],
         summary: 'Submit job application',
@@ -332,6 +366,89 @@ const openApiSpec = {
               },
             },
           },
+        },
+      },
+    },
+    '/api/applications/{id}': {
+      get: {
+        tags: ['Applications'],
+        summary: 'Get application by ID (admin)',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            required: true,
+            schema: { type: 'string' },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Application fetched successfully',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/Application' },
+              },
+            },
+          },
+          401: { description: 'Unauthenticated' },
+          403: { description: 'Forbidden' },
+          404: { description: 'Application not found' },
+        },
+      },
+      patch: {
+        tags: ['Applications'],
+        summary: 'Update application (admin)',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            required: true,
+            schema: { type: 'string' },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  jobId: { type: 'string' },
+                  name: { type: 'string' },
+                  email: { type: 'string', format: 'email' },
+                  resumeLink: { type: 'string', format: 'uri' },
+                  coverNote: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          200: { description: 'Application updated successfully' },
+          401: { description: 'Unauthenticated' },
+          403: { description: 'Forbidden' },
+          404: { description: 'Application not found' },
+        },
+      },
+      delete: {
+        tags: ['Applications'],
+        summary: 'Delete application (admin)',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            required: true,
+            schema: { type: 'string' },
+          },
+        ],
+        responses: {
+          200: { description: 'Application deleted successfully' },
+          401: { description: 'Unauthenticated' },
+          403: { description: 'Forbidden' },
+          404: { description: 'Application not found' },
         },
       },
     },

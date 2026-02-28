@@ -7,6 +7,8 @@ export const PERMISSIONS = {
   JOB_DELETE: 'job:delete',
   JOB_UPDATE: 'job:update',
   APPLICATION_READ: 'application:read',
+  APPLICATION_UPDATE: 'application:update',
+  APPLICATION_DELETE: 'application:delete',
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
@@ -17,6 +19,8 @@ export const ROLE_PERMISSIONS: Record<string, Permission[]> = {
     PERMISSIONS.JOB_DELETE,
     PERMISSIONS.JOB_UPDATE,
     PERMISSIONS.APPLICATION_READ,
+    PERMISSIONS.APPLICATION_UPDATE,
+    PERMISSIONS.APPLICATION_DELETE,
   ],
   applicant: [],
 };
