@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../../utils/catchAsync';
 import sendResponse from '../../../utils/sendResponse';
-import { createJob, removeJob } from '../services/job.service';
+import { createJob, removeJob, updateJob } from '../services/job.service';
 
 export const createJobHandler = catchAsync(async (req: Request, res: Response) => {
   const job = await createJob(req.body);
@@ -11,6 +11,18 @@ export const createJobHandler = catchAsync(async (req: Request, res: Response) =
     statusCode: httpStatus.CREATED,
     success: true,
     message: 'Job created successfully',
+    data: job,
+  });
+});
+
+export const updateJobHandler = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const job = await updateJob(id, req.body);
+
+  return sendResponse(req, res, {
+    statusCode: job ? httpStatus.OK : httpStatus.NOT_FOUND,
+    success: !!job,
+    message: job ? 'Job updated successfully' : 'Job not found',
     data: job,
   });
 });

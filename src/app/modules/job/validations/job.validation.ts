@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+const statusEnum = z.enum(['active', 'inactive']);
+
 export const createJobSchema = z.object({
   body: z.object({
     title: z.string().min(1, 'Title is required'),
@@ -7,6 +9,18 @@ export const createJobSchema = z.object({
     location: z.string().min(1, 'Location is required'),
     category: z.string().min(1, 'Category is required'),
     description: z.string().min(1, 'Description is required'),
+    status: statusEnum.optional(),
+  }),
+});
+
+export const updateJobSchema = z.object({
+  body: z.object({
+    title: z.string().min(1).optional(),
+    company: z.string().min(1).optional(),
+    location: z.string().min(1).optional(),
+    category: z.string().min(1).optional(),
+    description: z.string().min(1).optional(),
+    status: statusEnum.optional(),
   }),
 });
 

@@ -43,7 +43,15 @@ const openApiSpec = {
           company: { type: 'string' },
           location: { type: 'string' },
           category: { type: 'string' },
-          description: { type: 'string' },
+          description: {
+            type: 'string',
+            description: 'Rich text job description (markdown/HTML allowed)',
+          },
+          status: {
+            type: 'string',
+            enum: ['active', 'inactive'],
+            description: 'Job visibility status. active = visible, inactive = hidden',
+          },
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
         },
@@ -177,7 +185,15 @@ const openApiSpec = {
                   company: { type: 'string' },
                   location: { type: 'string' },
                   category: { type: 'string' },
-                  description: { type: 'string' },
+                  description: {
+                    type: 'string',
+                    description: 'Rich text job description (markdown/HTML allowed)',
+                  },
+                  status: {
+                    type: 'string',
+                    enum: ['active', 'inactive'],
+                    description: 'Optional status on create, defaults to active',
+                  },
                 },
               },
             },
@@ -218,6 +234,50 @@ const openApiSpec = {
               },
             },
           },
+          404: { description: 'Job not found' },
+        },
+      },
+      patch: {
+        tags: ['Jobs'],
+        summary: 'Update job (admin)',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            required: true,
+            schema: { type: 'string' },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string' },
+                  company: { type: 'string' },
+                  location: { type: 'string' },
+                  category: { type: 'string' },
+                  description: {
+                    type: 'string',
+                    description: 'Rich text job description (markdown/HTML allowed)',
+                  },
+                  status: {
+                    type: 'string',
+                    enum: ['active', 'inactive'],
+                    description: 'Set to inactive to hide job from public listing',
+                  },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          200: { description: 'Job updated successfully' },
+          401: { description: 'Unauthenticated' },
+          403: { description: 'Forbidden' },
           404: { description: 'Job not found' },
         },
       },

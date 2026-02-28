@@ -2,8 +2,12 @@ import { Router } from 'express';
 import validateRequest from '../../../middleware/validateRequest';
 import { authenticate, requirePermission } from '../../../middleware/auth.middleware';
 import { PERMISSIONS } from '../../../config/rbac';
-import { createJobSchema } from '../validations/job.validation';
-import { createJobHandler, deleteJobHandler } from '../controllers/admin.controller';
+import { createJobSchema, updateJobSchema } from '../validations/job.validation';
+import {
+  createJobHandler,
+  deleteJobHandler,
+  updateJobHandler,
+} from '../controllers/admin.controller';
 
 const router = Router();
 
@@ -15,6 +19,15 @@ router.post(
   requirePermission(PERMISSIONS.JOB_CREATE),
   validateRequest(createJobSchema),
   createJobHandler
+);
+
+// Admin: PATCH /api/jobs/:id
+router.patch(
+  '/:id',
+  authenticate,
+  requirePermission(PERMISSIONS.JOB_UPDATE),
+  validateRequest(updateJobSchema),
+  updateJobHandler
 );
 
 // Admin: DELETE /api/jobs/:id

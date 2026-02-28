@@ -4,7 +4,10 @@ export type TCreateJobInput = {
   location: string;
   category: string;
   description: string;
+  status?: 'active' | 'inactive';
 };
+
+export type TUpdateJobInput = Partial<TCreateJobInput>;
 
 export type TJobFilterQuery = {
   searchTerm?: string;

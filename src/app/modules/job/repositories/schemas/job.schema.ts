@@ -5,7 +5,8 @@ export interface IJob {
   company: string;
   location: string;
   category: string;
-  description: string;
+  description: string; // rich text / markdown allowed
+  status: 'active' | 'inactive';
   companyId?: Types.ObjectId;
   categoryId?: Types.ObjectId;
   createdAt?: Date;
@@ -37,7 +38,12 @@ const jobSchema = new Schema<IJob>(
     description: {
       type: String,
       required: true,
-      trim: true,
+    },
+    status: {
+      type: String,
+      enum: ['active', 'inactive'],
+      default: 'active',
+      index: true,
     },
     companyId: {
       type: Schema.Types.ObjectId,
