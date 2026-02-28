@@ -32,7 +32,7 @@ const generalRateLimit = rateLimit({
 // 2. CORS SETUP
 const allowedOrigins = env.allowedOrigins.length
     ? env.allowedOrigins
-    : ['http://localhost:3000'];
+    : ['https://quick-hire-console.vercel.app', 'http://localhost:3000'];
 
 const corsOptions = {
     origin: allowedOrigins,
