@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 
@@ -27,24 +27,42 @@ const generalRateLimit = rateLimit({
     message: 'Too many requests, please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
+    skip: (req: Request) => req.method === 'OPTIONS',
 });
 
 // 2. CORS SETUP
-const allowedOrigins = env.allowedOrigins.length
-    ? env.allowedOrigins
-    : ['https://quick-hire-console.vercel.app', 'http://localhost:3000'];
+const defaultOrigins = ['https://quick-hire-console.vercel.app', 'http://localhost:3000'];
 
-const corsOptions = {
-    origin: allowedOrigins,
+const normalizeOrigin = (origin: string) => origin.trim().replace(/\/$/, '').toLowerCase();
+
+const allowedOrigins = Array.from(
+    new Set([...defaultOrigins, ...env.allowedOrigins].map(normalizeOrigin))
+);
+
+const corsOptions: CorsOptions = {
+    origin: (origin, callback) => {
+        if (!origin) {
+            callback(null, true);
+            return;
+        }
+
+        const normalizedOrigin = normalizeOrigin(origin);
+
+        if (allowedOrigins.includes(normalizedOrigin)) {
+            callback(null, true);
+            return;
+        }
+
+        callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
 };
 
 // 3. GENERAL MIDDLEWARE
-app.use(generalRateLimit);
 app.use(cors(corsOptions));
-
 // Explicitly handle preflight OPTIONS requests
 app.options('*', cors(corsOptions));
+app.use(generalRateLimit);
 
 // 4. BODY PARSERS
 app.use(express.json({
