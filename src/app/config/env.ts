@@ -25,6 +25,10 @@ const envSchema = z.object({
 
   VERSION: z.string().default('1.0.0'),
   ALLOWED_ORIGINS: z.string().optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
+  CLOUDINARY_URL: z.string().optional(),
 });
 
 const rawEnv = {
@@ -38,6 +42,10 @@ const rawEnv = {
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN,
   VERSION: process.env.VERSION,
   ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS,
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  CLOUDINARY_URL: process.env.CLOUDINARY_URL,
 };
 
 const parsed = envSchema.safeParse(rawEnv);
@@ -69,6 +77,10 @@ const env = {
   jwtAccessExpiresIn: value.JWT_ACCESS_EXPIRES_IN ?? '15m',
   jwtRefreshExpiresIn: value.JWT_REFRESH_EXPIRES_IN ?? '7d',
   allowedOrigins,
+  cloudinaryCloudName: value.CLOUDINARY_CLOUD_NAME,
+  cloudinaryApiKey: value.CLOUDINARY_API_KEY,
+  cloudinaryApiSecret: value.CLOUDINARY_API_SECRET,
+  cloudinaryUrl: value.CLOUDINARY_URL,
 };
 
 export default env;

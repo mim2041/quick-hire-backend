@@ -1,0 +1,1 @@
+export { cloudinaryFileUploadService } from './CloudinaryFileUploadService';

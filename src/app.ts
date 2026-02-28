@@ -5,11 +5,13 @@ import helmet from 'helmet';
 import cors, { CorsOptions } from 'cors';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
+import httpStatus from 'http-status';
 
 // Your imports
 import router from './app/routes';
 import env from './app/config/env';
 import sendResponse from './app/utils/sendResponse';
+import AppError from './app/errors/AppError';
 import { globalErrorHandler, notFound } from './app/middleware';
 import { setupSwagger } from './app/docs/swagger';
 
@@ -53,7 +55,7 @@ const corsOptions: CorsOptions = {
             return;
         }
 
-        callback(new Error('Not allowed by CORS'));
+        callback(new AppError(httpStatus.FORBIDDEN, 'Not allowed by CORS'));
     },
     credentials: true,
 };

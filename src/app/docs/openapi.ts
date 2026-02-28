@@ -339,19 +339,25 @@ const openApiSpec = {
       post: {
         tags: ['Applications'],
         summary: 'Submit job application',
+        description:
+          'Submit an application with a resume file. The backend uploads the resume to Cloudinary and saves the generated URL as resumeLink.',
         requestBody: {
           required: true,
           content: {
-            'application/json': {
+            'multipart/form-data': {
               schema: {
                 type: 'object',
-                required: ['jobId', 'name', 'email', 'resumeLink', 'coverNote'],
+                required: ['jobId', 'name', 'email', 'coverNote', 'resume'],
                 properties: {
                   jobId: { type: 'string' },
                   name: { type: 'string' },
                   email: { type: 'string', format: 'email' },
-                  resumeLink: { type: 'string', format: 'uri' },
                   coverNote: { type: 'string' },
+                  resume: {
+                    type: 'string',
+                    format: 'binary',
+                    description: 'Resume/CV file (pdf, doc, docx, image/video are also accepted)',
+                  },
                 },
               },
             },
