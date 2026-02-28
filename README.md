@@ -182,6 +182,12 @@ npm start
 
 ---
 
+## 🗂 Database ERD
+
+![QuickHire ERD](./erd.svg)
+
+---
+
 ## 📜 Scripts
 
 | Command | Description |
