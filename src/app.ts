@@ -11,6 +11,7 @@ import router from './app/routes';
 import env from './app/config/env';
 import sendResponse from './app/utils/sendResponse';
 import { globalErrorHandler, notFound } from './app/middleware';
+import { setupSwagger } from './app/docs/swagger';
 
 const app: Application = express();
 
@@ -60,6 +61,9 @@ app.use(express.static('public'));
 
 // 6. ROUTES
 app.use('/api', router);
+
+// Swagger / OpenAPI docs
+setupSwagger(app);
 
 // 7. HEALTH CHECK
 app.get('/health', (req: Request, res: Response) => {
