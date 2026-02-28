@@ -20,6 +20,9 @@ const envSchema = z.object({
     .min(32, 'JWT_REFRESH_SECRET must be at least 32 characters')
     .optional(),
 
+  JWT_ACCESS_EXPIRES_IN: z.string().optional(),
+  JWT_REFRESH_EXPIRES_IN: z.string().optional(),
+
   VERSION: z.string().default('1.0.0'),
   ALLOWED_ORIGINS: z.string().optional(),
 });
@@ -31,6 +34,8 @@ const rawEnv = {
   CENTRAL_DB_NAME: process.env.CENTRAL_DB_NAME,
   JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET,
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+  JWT_ACCESS_EXPIRES_IN: process.env.JWT_ACCESS_EXPIRES_IN,
+  JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN,
   VERSION: process.env.VERSION,
   ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS,
 };
@@ -61,6 +66,8 @@ const env = {
   dbName: value.CENTRAL_DB_NAME,
   jwtAccessSecret: value.JWT_ACCESS_SECRET,
   jwtRefreshSecret: value.JWT_REFRESH_SECRET,
+  jwtAccessExpiresIn: value.JWT_ACCESS_EXPIRES_IN ?? '15m',
+  jwtRefreshExpiresIn: value.JWT_REFRESH_EXPIRES_IN ?? '7d',
   allowedOrigins,
 };
 

@@ -12,15 +12,6 @@ import env from './app/config/env';
 import sendResponse from './app/utils/sendResponse';
 import { globalErrorHandler, notFound } from './app/middleware';
 
-// Extend Express Request interface to include rawBody
-declare global {
-    namespace Express {
-        interface Request {
-            rawBody?: string;
-        }
-    }
-}
-
 const app: Application = express();
 
 // 1. SECURITY & PERFORMANCE MIDDLEWARE
@@ -58,7 +49,7 @@ app.options('*', cors(corsOptions));
 app.use(express.json({
     limit: '200mb',
     verify: (req: Request, res: Response, buf: Buffer) => {
-        (req as any).rawBody = buf.toString();
+        (req as Request & { rawBody?: string }).rawBody = buf.toString();
     }
 }));
 app.use(express.urlencoded({ extended: true, limit: '200mb' }));
