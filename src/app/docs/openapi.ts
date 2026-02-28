@@ -6,6 +6,20 @@ const openApiSpec = {
     description:
       'RESTful API for the QuickHire Job Board. Supports job listing, job details, applications, and admin management.',
   },
+  tags: [
+    {
+      name: 'Jobs',
+      description: 'Public and admin job endpoints',
+    },
+    {
+      name: 'Applications',
+      description: 'Job applications',
+    },
+    {
+      name: 'Auth',
+      description: 'Authentication and current user',
+    },
+  ],
   servers: [
     {
       url: 'http://localhost:9001',
@@ -106,6 +120,7 @@ const openApiSpec = {
   paths: {
     '/api/jobs': {
       get: {
+        tags: ['Jobs'],
         summary: 'List jobs',
         description: 'Returns a paginated list of jobs with optional search and filters.',
         parameters: [
@@ -147,6 +162,7 @@ const openApiSpec = {
         },
       },
       post: {
+        tags: ['Jobs'],
         summary: 'Create job (admin)',
         security: [{ bearerAuth: [] }],
         requestBody: {
@@ -183,6 +199,7 @@ const openApiSpec = {
     },
     '/api/jobs/{id}': {
       get: {
+        tags: ['Jobs'],
         summary: 'Get job by ID',
         parameters: [
           {
@@ -205,6 +222,7 @@ const openApiSpec = {
         },
       },
       delete: {
+        tags: ['Jobs'],
         summary: 'Delete job (admin)',
         security: [{ bearerAuth: [] }],
         parameters: [
@@ -225,6 +243,7 @@ const openApiSpec = {
     },
     '/api/applications': {
       post: {
+        tags: ['Applications'],
         summary: 'Submit job application',
         requestBody: {
           required: true,
@@ -258,6 +277,7 @@ const openApiSpec = {
     },
     '/api/auth/login': {
       post: {
+        tags: ['Auth'],
         summary: 'Login',
         requestBody: {
           required: true,
@@ -282,6 +302,7 @@ const openApiSpec = {
     },
     '/api/auth/refresh': {
       post: {
+        tags: ['Auth'],
         summary: 'Refresh access token',
         requestBody: {
           required: true,
@@ -305,6 +326,7 @@ const openApiSpec = {
     },
     '/api/auth/logout': {
       post: {
+        tags: ['Auth'],
         summary: 'Logout',
         requestBody: {
           required: false,
@@ -326,6 +348,7 @@ const openApiSpec = {
     },
     '/api/auth/me': {
       get: {
+        tags: ['Auth'],
         summary: 'Get current user',
         security: [{ bearerAuth: [] }],
         responses: {
