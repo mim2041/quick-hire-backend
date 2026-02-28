@@ -4,15 +4,16 @@
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
 
-
 import { TErrorSources } from '../interfaces/error';
 import handleZodError from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicateError';
 import AppError from '../errors/AppError';
+import { logger } from '../manager/logger';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  logger.error(`❌ Global error handler caught error: ${(err as Error).message}`);
   //setting default values
   let statusCode = 500;
   let message = 'Something went wrong!';
